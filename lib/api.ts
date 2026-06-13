@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Note } from '../types/note';
+import type { Note, NoteTag } from '../types/note';
 import type { FormValues } from '../components/NoteForm/NoteForm';
 axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
 
@@ -32,5 +32,14 @@ export async function deleteNote(id: string): Promise<Note> {
 
 export async function fetchNoteById(id: string): Promise<Note> {
   const { data } = await axios.get<Note>(`/notes/${id}`);
+  return data;
+}
+
+export async function fetchNoteByTag(
+  tag?: string,
+): Promise<FetchNotesResponse> {
+  const { data } = await axios.get<FetchNotesResponse>('/notes', {
+    params: tag ? { tag } : {},
+  });
   return data;
 }
