@@ -1,6 +1,5 @@
 import NoteList from '@/components/NoteList/NoteList';
 import { fetchNoteByTag } from '@/lib/api';
-import { log } from 'console';
 
 type NotesByTagProps = {
   params: Promise<{ slug: string[] }>;
