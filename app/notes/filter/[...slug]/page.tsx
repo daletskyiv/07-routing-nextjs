@@ -1,5 +1,10 @@
-import NoteList from '@/components/NoteList/NoteList';
 import { fetchNoteByTag } from '@/lib/api';
+import {
+  QueryClient,
+  dehydrate,
+  HydrationBoundary,
+} from '@tanstack/react-query';
+import NotesClient from './Notes.client';
 
 type NotesByTagProps = {
   params: Promise<{ slug: string[] }>;
@@ -8,11 +13,16 @@ type NotesByTagProps = {
 export default async function NotesByTag({ params }: NotesByTagProps) {
   const { slug } = await params;
   const category = slug[0] === 'all' ? undefined : slug[0];
-  const response = await fetchNoteByTag(category);
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['notes', { category }],
+    queryFn: () => fetchNoteByTag(category),
+  });
 
   return (
-    <div>
-      {response?.notes?.length > 0 && <NoteList noteList={response.notes} />}
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <NotesClient />
+    </HydrationBoundary>
   );
 }
