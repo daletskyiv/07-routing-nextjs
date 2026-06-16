@@ -1,6 +1,5 @@
 'use client';
 
-import Modal from '@/components/Modal/Modal';
 import NoteList from '@/components/NoteList/NoteList';
 import { fetchNoteByTag } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
