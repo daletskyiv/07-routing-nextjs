@@ -1,4 +1,6 @@
 .menuList {
+  display: flex;
+  justify-content: center;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -11,7 +13,7 @@
 .menuLink {
   text-decoration: none;
   color: #444;
-  font-size: 16px;
+  font-size: 20px;
   display: block;
   padding: 8px 16px;
   transition: background-color 0.3s ease;

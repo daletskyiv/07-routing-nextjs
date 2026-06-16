@@ -5,31 +5,41 @@ import css from './NotePreview.module.css';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchNoteById } from '@/lib/api';
+import { useRouter } from 'next/navigation';
 
 export default function NotePreviewClient() {
   const { id } = useParams<{ id: string }>();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['notes', { id }],
+    queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
   });
+
+  const router = useRouter();
+  const close = () => {
+    router.back();
+  };
 
   if (isLoading)
     return (
-      <Modal>
+      <Modal onClose={close}>
         <div>Loading...</div>
       </Modal>
     );
   if (isError)
     return (
-      <Modal>
-        <div>Error...</div>
+      <Modal onClose={close}>
+        <div>Error!</div>
       </Modal>
     );
   if (!data) return null;
 
   return (
-    <Modal>
+    <Modal onClose={close}>
+      <button type="button" onClick={close} className={css.backBtn}>
+        X
+      </button>
       <div className={css.container}>
         <div className={css.item}>
           <div className={css.header}>
